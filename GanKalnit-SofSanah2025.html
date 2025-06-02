@@ -46,13 +46,12 @@
         .small-text {
             font-size: 1.1em; /* גודל פונט גדול יותר לטקסט הקטן */
             color: #7f8c8d; /* אפור בינוני עדין */
-            /* margin-bottom: 30px; */ /* הסרנו את הרווח הזה */
         }
 
-         .small-ttext {
-            font-size: 1.8em; /* גודל פונט גדול יותר לטקסט הקטן */
-            color: #727e7e; /* אפור בינוני עדין */
-            /* margin-bottom: 30px; */ /* הסרנו את הרווח הזה */
+        .small-ttext { /* זהו הטקסט של "אורלי מטיאס" */
+            font-size: 1.8em; /* גודל פונט גדול יותר */
+            color: #727e7e; /* אפור בטיפה יותר כהה */
+            /* margin-bottom: 30px; */ /* הסרנו את הרווח הזה לחלוטין */
         }
 
         .button-container {
@@ -98,7 +97,7 @@
     <div class="loading-container" id="loadingContainer">
         <div class="loader-text">טוען את הקובץ שלך…</div>
         <div class="small-text">עמית מטיאס</div>
-        <div class="small-ttext">אורלי מטיאס</div>
+        <div class="small-ttext" id="orlyText">אורלי מטיאס</div>
         <div class="button-container" id="buttonContainer" style="display: none;">
             <button class="action-button" onclick="window.location.href='KalnitSofSanah25.pdf'">אורך</button>
             <button class="action-button" onclick="window.location.href='LKAlnitSofSanah25.pdf'">רוחב</button>
@@ -110,12 +109,13 @@
             const loadingContainer = document.getElementById('loadingContainer');
             const loaderText = loadingContainer.querySelector('.loader-text');
             const smallText = loadingContainer.querySelector('.small-text');
+            const orlyText = document.getElementById('orlyText');
             const buttonContainer = document.getElementById('buttonContainer');
 
             // Hide the loading text and show buttons
             loaderText.style.display = 'none';
-            smallText.style.display = 'none'; // זה יעלים את הטקסט הקטן יחד עם הרווח שלו
-            smallTtext.style.display = 'none'; // זה יעלים את הטקסט הקטן יחד עם הרווח שלו
+            smallText.style.display = 'none';
+            orlyText.style.display = 'none';
             buttonContainer.style.display = 'flex'; // Show buttons with flex display
             buttonContainer.style.animation = 'fadeIn 0.8s forwards'; // Apply fade-in animation to buttons
 
