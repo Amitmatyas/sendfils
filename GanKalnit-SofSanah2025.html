@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>טוען את הקובץ שלך...</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⌛</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             display: flex;
@@ -13,16 +14,16 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #ffffff; /* רקע תכלת עדין */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* פונט מודרני יותר */
-            color: #000000; /* צבע טקסט כהה */
+            background-color: #f8f9fa; /* רקע אפור בהיר מאוד, כמעט לבן */
+            font-family: 'Heebo', sans-serif; /* שימוש בפונט Heebo */
+            color: #2c3e50; /* צבע טקסט כהה יותר, נעים לעין */
             direction: rtl; /* כיוון טקסט מימין לשמאל לכל העמוד */
             text-align: center; /* יישור מרכזי של התוכן בתוך המלבן */
             overflow: hidden; /* מונע גלילה אם האנימציה יוצאת מגבולות המסך */
         }
 
         .loading-container {
-            background-color: #bdc3c7; /* רקע לבן למלבן */
+            background-color: #ffffff; /* רקע לבן למלבן */
             border-radius: 12px; /* פינות מעוגלות */
             padding: 40px 60px; /* ריווח פנימי גדול יותר */
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* צל עדין יותר ומודרני */
@@ -32,18 +33,46 @@
             align-items: center;
             opacity: 0; /* מתחיל שקוף לאנימציית דהייה */
             animation: fadeIn 0.8s forwards; /* אנימציית דהייה בכניסה */
+            max-width: 90%; /* כדי שלא יהיה רחב מדי במסכים קטנים */
         }
 
         .loader-text {
             font-size: 2.8em; /* גודל פונט גדול יותר */
             font-weight: 700; /* עובי פונט מודגש יותר */
             margin-bottom: 15px;
-            color: #000000; /* צבע טקסט ראשי כהה יותר */
+            color: #34495e; /* צבע טקסט ראשי כהה יותר */
         }
 
         .small-text {
             font-size: 1.1em; /* גודל פונט גדול יותר לטקסט הקטן */
-            color: #ecf0f1; /* אפור בינוני */
+            color: #7f8c8d; /* אפור בינוני עדין */
+            /* margin-bottom: 30px; */ /* הסרנו את הרווח הזה */
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px; /* רווח בין הכפתורים */
+            margin-top: 20px; /* רווח מעל הכפתורים */
+            opacity: 0; /* מתחיל שקוף */
+            animation: fadeIn 0.8s forwards; /* אנימציית דהייה לכפתורים */
+            animation-delay: 0.5s; /* עיכוב בהופעת הכפתורים */
+        }
+
+        .action-button {
+            background-color: #3498db; /* כחול יפה לכפתורים */
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .action-button:hover {
+            background-color: #2980b9; /* גוון כהה יותר בלחיצה */
+            transform: translateY(-3px); /* אפקט ריחוף עדין */
         }
 
         /* אנימציית דהייה בכניסה */
@@ -63,16 +92,26 @@
     <div class="loading-container" id="loadingContainer">
         <div class="loader-text">טוען את הקובץ שלך…</div>
         <div class="small-text">עמית מטיאס</div>
+        <div class="button-container" id="buttonContainer" style="display: none;">
+            <button class="action-button" onclick="window.location.href='KalnitSofSanah25.pdf'">אורך</button>
+            <button class="action-button" onclick="window.location.href='LKAlnitSofSanah25.pdf'">רוחב</button>
+        </div>
     </div>
 
     <script>
         setTimeout(function() {
             const loadingContainer = document.getElementById('loadingContainer');
-            loadingContainer.style.animation = 'fadeOut 0.8s forwards'; // הפעלת אנימציית יציאה
-            setTimeout(function() {
-                window.location.href = 'KalnitSofSanah25.pdf';
-            }, 800); // המתן לסיום אנימציית היציאה לפני המעבר
-        }, 3000); // 3000 מילישניות = 3 שניות לפני תחילת אנימציית היציאה
+            const loaderText = loadingContainer.querySelector('.loader-text');
+            const smallText = loadingContainer.querySelector('.small-text');
+            const buttonContainer = document.getElementById('buttonContainer');
+
+            // Hide the loading text and show buttons
+            loaderText.style.display = 'none';
+            smallText.style.display = 'none'; // זה יעלים את הטקסט הקטן יחד עם הרווח שלו
+            buttonContainer.style.display = 'flex'; // Show buttons with flex display
+            buttonContainer.style.animation = 'fadeIn 0.8s forwards'; // Apply fade-in animation to buttons
+
+        }, 3000); // 3000 מילישניות = 3 שניות לפני הופעת הכפתורים
     </script>
 </body>
 </html>
