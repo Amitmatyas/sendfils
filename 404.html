@@ -52,29 +52,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .logo-container {
-            margin-bottom: 0px; /* רווח בין הלוגו ל-404 */
-            animation: logoScaleIn 0.8s ease-out forwards;
-            opacity: 0;
-            animation-delay: 0.2s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 90px; /* גובה קטן יותר לקונטיינר הלוגו */
-        }
-
-        @keyframes logoScaleIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .logo {
-            max-width: 180px; /* גודל לוגו קטן יותר */
-            height: auto;
-            object-fit: contain; /* מבטיח שהלוגו לא ייחתך */
-            /* הוסר border-radius, transition ו-box-shadow כדי להסיר מסגרת ואפקטים */
-        }
-
         .error-code {
             font-family: 'Montserrat', sans-serif;
             font-size: 8em;
@@ -144,7 +121,6 @@
     <div id="particles-js"></div>
 
     <div class="content-wrapper">
-        <div class="logo-container">
         </div>
         <h1 class="error-code">404</h1>
         <p class="error-message">אופס! הדף שחיפשת לא נמצא.</p>
