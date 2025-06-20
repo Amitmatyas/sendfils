@@ -58,7 +58,14 @@
             font-weight: 700;
             color: #e74c3c; /* צבע אדום לספירה לאחור */
             margin-top: 10px; /* רווח מהכותרת מעל */
-            animation: textFade 1s infinite alternate; /* אנימציה של דהייה לטקסט */
+        }
+
+        .animated-clock {
+            font-size: 3em; /* גודל גדול יותר לאמוג'י */
+            margin-top: 15px; /* רווח מעל הכפתור */
+            margin-bottom: 15px; /* רווח מתחת לשעון */
+            display: inline-block; /* כדי לאפשר סיבוב */
+            animation: spin 5s linear infinite; /* אנימציית סיבוב */
         }
 
         .button-container {
@@ -84,12 +91,6 @@
             transform: translateY(-3px); /* אפקט ריחוף עדין */
         }
 
-        .animated-hourglass {
-            font-size: 4em; /* גודל גדול יותר לאמוג'י */
-            margin-bottom: 20px;
-            animation: spin 5s linear infinite; /* אנימציית סיבוב */
-        }
-
         /* אנימציית דהייה בכניסה */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -107,13 +108,6 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-
-        /* אנימציה עדינה לדהייה של טקסט הספירה לאחור */
-        @keyframes textFade {
-            0% { opacity: 1; }
-            50% { opacity: 0.8; }
-            100% { opacity: 1; }
-        }
     </style>
 </head>
 <body>
@@ -122,12 +116,12 @@
             <div class="loader-text">טוען את הקובץ שלך…</div>
             <div class="small-text">עמית מטיאס</div>
             <div class="small-ttext">מסע סוף שנה - כיתה ז</div>
-            <div class="animated-hourglass">⌛</div> </div>
+        </div>
 
         <div id="countdownContent" style="display: none;">
-            <div class="animated-hourglass">⌛</div> <div class="loader-text" id="deletionMessage"></div>
+            <div class="loader-text" id="deletionMessage"></div>
             <div class="countdown-numbers" id="countdownTimer"></div>
-            <div class="button-container">
+            <div class="animated-clock">🕒</div> <div class="button-container">
                 <button class="action-button" id="actionButton">אישור</button>
             </div>
         </div>
@@ -146,11 +140,13 @@
             const deletionMessageElement = document.getElementById('deletionMessage');
             const countdownTimerElement = document.getElementById('countdownTimer');
             const actionButton = document.getElementById('actionButton');
+            const animatedClock = document.querySelector('#countdownContent .animated-clock');
 
             if (timeLeft <= 0) {
                 // אם התאריך עבר
                 deletionMessageElement.textContent = 'הקובץ נמחק, אנא פנה לבעל הקובץ.'; // הקובץ נמחק, אנא פנה לבעל הקובץ.
                 countdownTimerElement.textContent = ''; // נקה את הטיימר
+                animatedClock.style.display = 'none'; // הסתר את השעון
                 
                 // שנה את פעולת הכפתור לסגירת החלון
                 actionButton.removeEventListener('click', redirectToFile); // הסר את ה-listener הקודם אם קיים
@@ -165,6 +161,7 @@
 
                 deletionMessageElement.textContent = 'הקובץ יימחק בעוד:'; // הקובץ יימחק בעוד:
                 countdownTimerElement.textContent = `${days} ימים, ${hours} שעות, ${minutes} דקות, ${seconds} שניות`; // X ימים, Y שעות...
+                animatedClock.style.display = 'inline-block'; // ודא שהשעון מוצג
             }
         }
 
@@ -175,7 +172,6 @@
         function closeWindow() {
             window.close();
             // Fallback for browsers that prevent window.close() initiated by script
-            // This might show a blank page or an error depending on browser security settings.
             if (window.opener && !window.opener.closed) {
                 window.opener.focus();
             }
