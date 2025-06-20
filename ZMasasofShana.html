@@ -53,10 +53,18 @@
             color: #727e7e; /* אפור בטיפה יותר כהה */
         }
 
+        .countdown-numbers {
+            font-size: 2em; /* גודל פונט גדול יותר לספירה לאחור */
+            font-weight: 700;
+            color: #e74c3c; /* צבע אדום לספירה לאחור */
+            margin-top: 10px; /* רווח מהכותרת מעל */
+            animation: textFade 1s infinite alternate; /* אנימציה של דהייה לטקסט */
+        }
+
         .button-container {
             display: flex;
             gap: 20px; /* רווח בין הכפתורים */
-            margin-top: 20px; /* רווח מעל הכפתורים */
+            margin-top: 30px; /* רווח גדול יותר מעל הכפתורים */
         }
 
         .action-button {
@@ -76,6 +84,12 @@
             transform: translateY(-3px); /* אפקט ריחוף עדין */
         }
 
+        .animated-hourglass {
+            font-size: 4em; /* גודל גדול יותר לאמוג'י */
+            margin-bottom: 20px;
+            animation: spin 5s linear infinite; /* אנימציית סיבוב */
+        }
+
         /* אנימציית דהייה בכניסה */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -87,6 +101,19 @@
             from { opacity: 1; transform: translateY(0); }
             to { opacity: 0; transform: translateY(-20px); }
         }
+
+        /* אנימציה לסיבוב השעון */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* אנימציה עדינה לדהייה של טקסט הספירה לאחור */
+        @keyframes textFade {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -95,11 +122,11 @@
             <div class="loader-text">טוען את הקובץ שלך…</div>
             <div class="small-text">עמית מטיאס</div>
             <div class="small-ttext">מסע סוף שנה - כיתה ז</div>
-        </div>
+            <div class="animated-hourglass">⌛</div> </div>
 
         <div id="countdownContent" style="display: none;">
-            <div class="loader-text" id="deletionMessage"></div>
-            <div class="small-text" id="countdownTimer"></div>
+            <div class="animated-hourglass">⌛</div> <div class="loader-text" id="deletionMessage"></div>
+            <div class="countdown-numbers" id="countdownTimer"></div>
             <div class="button-container">
                 <button class="action-button" id="actionButton">אישור</button>
             </div>
@@ -122,9 +149,13 @@
 
             if (timeLeft <= 0) {
                 // אם התאריך עבר
-                deletionMessageElement.textContent = 'הקובץ נמחק.'; // הקובץ נמחק.
+                deletionMessageElement.textContent = 'הקובץ נמחק, אנא פנה לבעל הקובץ.'; // הקובץ נמחק, אנא פנה לבעל הקובץ.
                 countdownTimerElement.textContent = ''; // נקה את הטיימר
-                // אין צורך להפסיק את ה-setInterval כאן, הוא ימשיך לרוץ אך התוכן לא ישתנה.
+                
+                // שנה את פעולת הכפתור לסגירת החלון
+                actionButton.removeEventListener('click', redirectToFile); // הסר את ה-listener הקודם אם קיים
+                actionButton.addEventListener('click', closeWindow);
+                actionButton.textContent = 'סגור'; // שנה את טקסט הכפתור
             } else {
                 // אם התאריך עוד לא הגיע
                 const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
@@ -137,16 +168,27 @@
             }
         }
 
+        function redirectToFile() {
+            window.location.href = redirectLink;
+        }
+
+        function closeWindow() {
+            window.close();
+            // Fallback for browsers that prevent window.close() initiated by script
+            // This might show a blank page or an error depending on browser security settings.
+            if (window.opener && !window.opener.closed) {
+                window.opener.focus();
+            }
+        }
+
         // ודא שה-DOM נטען במלואו לפני הפעלת הסקריפט
         document.addEventListener('DOMContentLoaded', () => {
             const initialLoadingContent = document.getElementById('initialLoadingContent');
             const countdownContent = document.getElementById('countdownContent');
             const actionButton = document.getElementById('actionButton');
 
-            // הוסף אירוע לחיצה לכפתור האישור
-            actionButton.addEventListener('click', () => {
-                window.location.href = redirectLink;
-            });
+            // הוסף אירוע לחיצה לכפתור האישור - ברירת מחדל היא הפניה לקובץ
+            actionButton.addEventListener('click', redirectToFile);
 
             // המתן 3 שניות עבור מסך הטעינה הראשוני
             setTimeout(function() {
