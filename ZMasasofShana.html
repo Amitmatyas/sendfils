@@ -14,68 +14,76 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f8f9fa; /* רקע אפור בהיר מאוד, כמעט לבן */
-            font-family: 'Heebo', sans-serif; /* שימוש בפונט Heebo */
-            color: #2c3e50; /* צבע טקסט כהה יותר, נעים לעין */
-            direction: rtl; /* כיוון טקסט מימין לשמאל לכל העמוד */
-            text-align: center; /* יישור מרכזי של התוכן בתוך המלבן */
-            overflow: hidden; /* מונע גלילה אם האנימציה יוצאת מגבולות המסך */
+            background-color: #f8f9fa;
+            font-family: 'Heebo', sans-serif;
+            color: #2c3e50;
+            direction: rtl;
+            text-align: center;
+            overflow: hidden;
         }
 
         .loading-container {
-            background-color: #ffffff; /* רקע לבן למלבן */
-            border-radius: 12px; /* פינות מעוגלות */
-            padding: 40px 60px; /* ריווח פנימי גדול יותר */
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* צל עדין יותר ומודרני */
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 40px 60px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            opacity: 0; /* מתחיל שקוף לאנימציית דהייה */
-            animation: fadeIn 0.8s forwards; /* אנימציית דהייה בכניסה */
-            max-width: 90%; /* כדי שלא יהיה רחב מדי במסכים קטנים */
+            opacity: 0;
+            animation: fadeIn 0.8s forwards;
+            max-width: 90%;
         }
 
         .loader-text {
-            font-size: 2.8em; /* גודל פונט גדול יותר */
-            font-weight: 700; /* עובי פונט מודגש יותר */
-            margin-bottom: 15px;
-            color: #34495e; /* צבע טקסט ראשי כהה יותר */
+            font-size: 2.2em;
+            font-weight: 700;
+            color: #34495e;
         }
 
         .small-text {
-            font-size: 1.1em; /* גודל פונט גדול יותר לטקסט הקטן */
-            color: #7f8c8d; /* אפור בינוני עדין */
+            font-size: 1.5em;
+            color: #7f8c8d;
         }
 
         .small-ttext {
-            font-size: 1.8em; /* גודל פונט גדול יותר */
-            color: #727e7e; /* אפור בטיפה יותר כהה */
+            font-size: 1.8em;
+            color: #727e7e;
         }
 
-        .countdown-numbers {
-            font-size: 2em; /* גודל פונט גדול יותר לספירה לאחור */
+        .countdown-display {
+            font-size: 2em;
             font-weight: 700;
-            color: #e74c3c; /* צבע אדום לספירה לאחור */
-            margin-top: 10px; /* רווח מהכותרת מעל */
+            color: #e74c3c;
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .animated-clock {
-            font-size: 3em; /* גודל גדול יותר לאמוג'י */
-            margin-top: 15px; /* רווח מעל הכפתור */
-            margin-bottom: 15px; /* רווח מתחת לשעון */
-            display: inline-block; /* כדי לאפשר סיבוב */
-            animation: spin 5s linear infinite; /* אנימציית סיבוב */
+        .countdown-time {
+            margin-top: 10px;
+            font-size: 1.6em;
+            color: #c0392b;
+            font-weight: 600;
+        }
+
+        .animated-clock .clock-hands {
+            font-size: 3em;
+            display: inline-block;
+            animation: spin 5s linear infinite;
+            margin-top: 10px;
         }
 
         .button-container {
             display: flex;
-            gap: 20px; /* רווח בין הכפתורים */
-            margin-top: 30px; /* רווח גדול יותר מעל הכפתורים */
+            gap: 20px;
+            margin-top: 30px;
         }
 
         .action-button {
-            background-color: #3498db; /* כחול יפה לכפתורים */
+            background-color: #3498db;
             color: white;
             padding: 15px 30px;
             border: none;
@@ -87,23 +95,20 @@
         }
 
         .action-button:hover {
-            background-color: #2980b9; /* גוון כהה יותר בלחיצה */
-            transform: translateY(-3px); /* אפקט ריחוף עדין */
+            background-color: #2980b9;
+            transform: translateY(-3px);
         }
 
-        /* אנימציית דהייה בכניסה */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* אנימציית דהייה ביציאה */
         @keyframes fadeOut {
             from { opacity: 1; transform: translateY(0); }
             to { opacity: 0; transform: translateY(-20px); }
         }
 
-        /* אנימציה לסיבוב השעון */
         @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
@@ -114,54 +119,56 @@
     <div class="loading-container" id="loadingContainer">
         <div id="initialLoadingContent">
             <div class="loader-text">טוען את הקובץ שלך…</div>
+			<br>
             <div class="small-text">עמית מטיאס</div>
+            <br>
             <div class="small-ttext">מסע סוף שנה - כיתה ז</div>
         </div>
 
         <div id="countdownContent" style="display: none;">
-            <div class="loader-text" id="deletionMessage"></div>
-            <div class="countdown-numbers" id="countdownTimer"></div>
-            <div class="animated-clock">🕒</div> <div class="button-container">
-                <button class="action-button" id="actionButton">אישור</button>
+            <div class="countdown-display">
+                <div class="loader-text" id="deletionMessage"></div>
+                <div id="countdownTimeLeft" class="countdown-time"></div>
+                <div class="animated-clock">
+                    <span class="clock-hands">🕒</span>
+                </div>
+                <div class="button-container">
+                    <button class="action-button" id="actionButton">אישור</button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // תאריך היעד למחיקת הקובץ: 27 ביוני 2025, שעה 00:00:00 (חצות)
-        // השתמש ב-'+03:00' כדי לציין את אזור הזמן של ישראל (IDT).
         const targetDate = new Date('2025-06-27T00:00:00+03:00');
-        const redirectLink = ''; // **הכנס כאן את הלינק שלך**
+        const redirectLink = ''; // ← כאן שים את הקישור שלך
 
         function updateCountdown() {
             const now = new Date();
             const timeLeft = targetDate.getTime() - now.getTime();
 
             const deletionMessageElement = document.getElementById('deletionMessage');
-            const countdownTimerElement = document.getElementById('countdownTimer');
+            const countdownTimeLeftElement = document.getElementById('countdownTimeLeft');
             const actionButton = document.getElementById('actionButton');
-            const animatedClock = document.querySelector('#countdownContent .animated-clock');
+            const animatedClock = document.querySelector('.animated-clock');
 
             if (timeLeft <= 0) {
-                // אם התאריך עבר
-                deletionMessageElement.textContent = 'הקובץ נמחק, אנא פנה לבעל הקובץ.'; // הקובץ נמחק, אנא פנה לבעל הקובץ.
-                countdownTimerElement.textContent = ''; // נקה את הטיימר
-                animatedClock.style.display = 'none'; // הסתר את השעון
-                
-                // שנה את פעולת הכפתור לסגירת החלון
-                actionButton.removeEventListener('click', redirectToFile); // הסר את ה-listener הקודם אם קיים
+                deletionMessageElement.textContent = 'הקובץ נמחק, אנא פנה לבעל הקובץ.';
+                countdownTimeLeftElement.textContent = '';
+                animatedClock.style.display = 'none';
+
+                actionButton.removeEventListener('click', redirectToFile);
                 actionButton.addEventListener('click', closeWindow);
-                actionButton.textContent = 'סגור'; // שנה את טקסט הכפתור
+                actionButton.textContent = 'סגור';
             } else {
-                // אם התאריך עוד לא הגיע
                 const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-                deletionMessageElement.textContent = 'הקובץ יימחק בעוד:'; // הקובץ יימחק בעוד:
-                countdownTimerElement.textContent = `${days} ימים, ${hours} שעות, ${minutes} דקות, ${seconds} שניות`; // X ימים, Y שעות...
-                animatedClock.style.display = 'inline-block'; // ודא שהשעון מוצג
+                deletionMessageElement.textContent = 'הקובץ יימחק בעוד:';
+                countdownTimeLeftElement.textContent = `${days} ימים, ${hours} שעות, ${minutes} דקות, ${seconds} שניות`;
+                animatedClock.style.display = 'inline-block';
             }
         }
 
@@ -171,35 +178,27 @@
 
         function closeWindow() {
             window.close();
-            // Fallback for browsers that prevent window.close() initiated by script
             if (window.opener && !window.opener.closed) {
                 window.opener.focus();
             }
         }
 
-        // ודא שה-DOM נטען במלואו לפני הפעלת הסקריפט
         document.addEventListener('DOMContentLoaded', () => {
             const initialLoadingContent = document.getElementById('initialLoadingContent');
             const countdownContent = document.getElementById('countdownContent');
             const actionButton = document.getElementById('actionButton');
 
-            // הוסף אירוע לחיצה לכפתור האישור - ברירת מחדל היא הפניה לקובץ
             actionButton.addEventListener('click', redirectToFile);
 
-            // המתן 3 שניות עבור מסך הטעינה הראשוני
             setTimeout(function() {
-                // הסתר את תוכן הטעינה הראשוני
                 initialLoadingContent.style.display = 'none';
+                countdownContent.style.display = 'flex';
+                countdownContent.style.opacity = '0';
+                countdownContent.style.animation = 'fadeIn 0.8s forwards';
 
-                // הצג את תוכן הספירה לאחור והחל עליו אנימציית דהייה בכניסה
-                countdownContent.style.display = 'flex'; // השתמש ב-flex למרכוז התוכן הפנימי שלו
-                countdownContent.style.opacity = '0'; // התחל שקוף עבור אנימציית ה-fadeIn שלו
-                countdownContent.style.animation = 'fadeIn 0.8s forwards'; // הפעל אנימציית דהייה בכניסה
-
-                // עדכן את הספירה לאחור באופן מיידי ואז הגדר אינטרוול לעדכונים הבאים
                 updateCountdown();
-                setInterval(updateCountdown, 1000); // עדכן כל שנייה
-            }, 3000); // השהיה של 3 שניות עבור מסך הטעינה הראשוני
+                setInterval(updateCountdown, 1000);
+            }, 3000);
         });
     </script>
 </body>
