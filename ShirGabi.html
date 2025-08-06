@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>הגדרות הדפסה</title>
+    <title>הדפסת חוברת ציור לשיר - בית הבובות של גבי</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖨️</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -50,7 +50,7 @@
             color: #7f8c8d;
         }
         
-        .initial-prompt {
+        .initial-prompt, .loading-screen, .printed-screen {
             opacity: 0;
             animation: fadeIn 0.8s forwards;
             animation-delay: 0.5s;
@@ -100,6 +100,12 @@
             margin-bottom: 30px;
             color: #34495e;
         }
+
+        .note-text {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
         
         .main-buttons-container {
             display: flex;
@@ -115,6 +121,7 @@
             align-items: center;
             max-width: 250px;
             text-align: center;
+            position: relative;
         }
 
         .action-button {
@@ -128,6 +135,8 @@
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
             width: 100%;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .action-button:hover {
@@ -242,6 +251,34 @@
             margin-top: 20px;
         }
 
+        /* סגנון למסך הסיום */
+        .printed-screen {
+            display: none;
+            text-align: center;
+        }
+        
+        .printed-screen .loading-text {
+            font-size: 2.5em;
+        }
+
+        .printed-screen .final-button {
+            background-color: #2ecc71;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        
+        .printed-screen .final-button:hover {
+            background-color: #27ae60;
+            transform: translateY(-3px);
+        }
+        
         /* אנימציות */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -260,17 +297,23 @@
         <div class="loading-text">היי, אבא</div>
         <div class="small-text">אשמח שתדפיס את הקבצים הבאים</div>
         <div class="initial-prompt-buttons">
-            <button class="prompt-button" onclick="showMainContent()">כן</button>
+            <button class="prompt-button" onclick="showLoadingScreen()">כן</button>
             <button class="prompt-button no" onclick="window.close()">לא</button>
         </div>
     </div>
     
+    <div id="loadingScreen" class="loading-screen" style="display: none;">
+        <div class="loading-text">טוען את הקבצים...</div>
+        <div class="small-text">אנא המתן ⏳</div>
+    </div>
+    
     <div id="mainContent" class="main-content">
         <div class="title">בחר את סוג ההדפסה:</div>
+        <div class="note-text">כפתור הדפסה פותח חלונית הדפסה, לחיצה על שם הקובץ תוביל ישירות לקובץ</div>
         
         <div class="main-buttons-container">
-            <div class="action-group" data-filename="ShirGabi/ספרון 1.pdf">
-                <button class="action-button" onclick="handleFileAction(this, 'view')">ספרון 1</button>
+            <div class="action-group" data-filename="ShirGabi/ספרון 1.pdf" data-id="file1">
+                <button class="action-button" onclick="handleFileView(this)">ספרון 1</button>
                 <button class="conditions-button" onclick="toggleConditions(this)">הצג תנאי הדפסה</button>
                 <div class="conditions-box">
                     <p><strong>גודל דף:</strong> A4</p>
@@ -278,11 +321,11 @@
                     <p><strong>דו״צ:</strong> כן</p>
                     <button class="accept-button" onclick="acceptConditions(this)">קראתי ואני מאשר</button>
                 </div>
-                <button class="print-button" onclick="handleFileAction(this, 'print')">להדפסה</button>
+                <button class="print-button" onclick="handlePrintAction(this)">להדפסה</button>
             </div>
             
-            <div class="action-group" data-filename="ShirGabi/כריכה + סיום.pdf">
-                <button class="action-button" onclick="handleFileAction(this, 'view')">כריכה + סיום</button>
+            <div class="action-group" data-filename="ShirGabi/כריכה + סיום.pdf" data-id="file2">
+                <button class="action-button" onclick="handleFileView(this)">כריכה + סיום</button>
                 <button class="conditions-button" onclick="toggleConditions(this)">הצג תנאי הדפסה</button>
                 <div class="conditions-box">
                     <p><strong>גודל דף:</strong> A4</p>
@@ -290,9 +333,15 @@
                     <p><strong>דו״צ:</strong> לא</p>
                     <button class="accept-button" onclick="acceptConditions(this)">קראתי ואני מאשר</button>
                 </div>
-                <button class="print-button" onclick="handleFileAction(this, 'print')">להדפסה</button>
+                <button class="print-button" onclick="handlePrintAction(this)">להדפסה</button>
             </div>
         </div>
+    </div>
+    
+    <div id="printedScreen" class="printed-screen">
+        <div class="loading-text">הקבצים הודפסו בהצלחה! ✅</div>
+        <div class="small-text">לא ניתן לגשת שוב לקבצים אלו מדף זה.</div>
+        <button class="final-button" onclick="window.close()">אישור</button>
     </div>
     
     <div class="overlay" id="popupOverlay">
@@ -301,52 +350,144 @@
             <button class="popup-close" onclick="closePopup()">אישור</button>
         </div>
     </div>
+
+    <div class="overlay" id="printConfirmationOverlay">
+        <div class="popup">
+            <p id="printConfirmationMessage"></p>
+            <button class="popup-close" onclick="confirmPrint(true)">הודפס בהצלחה</button>
+            <button class="popup-close" onclick="confirmPrint(false)">הדפסה נכשלה</button>
+        </div>
+    </div>
 </div>
 
 <script>
-    function showMainContent() {
+    let printedFiles = 0;
+    const totalFiles = 2;
+    let currentPrintButton = null;
+
+    window.onload = function() {
+        if (localStorage.getItem('printed_status') === 'true') {
+            document.getElementById('initialPrompt').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('printedScreen').style.display = 'flex';
+            document.getElementById('mainContainer').style.opacity = '1';
+            document.getElementById('mainContainer').style.transform = 'translateY(0)';
+        }
+    };
+
+    function showLoadingScreen() {
         const initialPrompt = document.getElementById('initialPrompt');
-        const mainContent = document.getElementById('mainContent');
+        const loadingScreen = document.getElementById('loadingScreen');
         
         initialPrompt.style.animation = 'fadeOut 0.5s forwards';
         
         setTimeout(() => {
             initialPrompt.style.display = 'none';
+            loadingScreen.style.display = 'flex';
+            loadingScreen.style.animation = 'fadeIn 0.8s forwards';
+            
+            setTimeout(() => {
+                showMainContent();
+            }, 1500);  
+        }, 500);
+    }
+
+    function showMainContent() {
+        const loadingScreen = document.getElementById('loadingScreen');
+        const mainContent = document.getElementById('mainContent');
+
+        loadingScreen.style.animation = 'fadeOut 0.5s forwards';
+        
+        setTimeout(() => {
+            loadingScreen.style.display = 'none';
             mainContent.style.display = 'flex';
             mainContent.style.animation = 'fadeIn 0.8s forwards';
         }, 500);
     }
     
-    function handleFileAction(button, actionType) {
+    function handleFileView(button) {
         const actionGroup = button.closest('.action-group');
         const filename = actionGroup.dataset.filename;
+        const accepted = actionGroup.dataset.accepted === 'true';
         
-        if (actionType === 'view') {
-            const accepted = actionGroup.dataset.accepted === 'true';
-            if (!accepted) {
-                showPopup('חובה לאשר את התקנון לפני פתיחת הקובץ.');
-                return;
-            }
-            window.open(filename, '_blank');
-        } else if (actionType === 'print') {
-            const accepted = actionGroup.dataset.accepted === 'true';
-            if (!accepted) {
-                showPopup('חובה לאשר את התקנון לפני הדפסת הקובץ.');
-                return;
-            }
+        // הגדרה של הכפתור הנוכחי לדיאלוג האישור
+        currentPrintButton = actionGroup.querySelector('.print-button');
+
+        if (!accepted) {
+            showPopup('חובה לאשר את התנאים לפני פתיחת הקובץ.');
+            return;
+        }
+
+        if (actionGroup.dataset.printed === 'true') {
+            showPopup('קובץ זה כבר הודפס.');
+            return;
+        }
+
+        window.open(filename, '_blank');
+        showPrintConfirmation(currentPrintButton);
+    }
+
+    function handlePrintAction(button) {
+        const actionGroup = button.closest('.action-group');
+        const filename = actionGroup.dataset.filename;
+        const accepted = actionGroup.dataset.accepted === 'true';
+        currentPrintButton = button;
+        
+        if (!accepted) {
+            showPopup('חובה לאשר את התנאים לפני הדפסת הקובץ.');
+            return;
+        }
+        
+        if (actionGroup.dataset.printed === 'true') {
+            showPopup('קובץ זה כבר הודפס.');
+            return;
+        }
+
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = filename;
+        document.body.appendChild(iframe);
+        
+        iframe.onload = () => {
+            iframe.contentWindow.print();
+            setTimeout(() => {
+                document.body.removeChild(iframe);
+                showPrintConfirmation(button);
+            }, 1000);
+        };
+    }
+    
+    function showPrintConfirmation(button) {
+        const popupOverlay = document.getElementById('printConfirmationOverlay');
+        const popupMessage = document.getElementById('printConfirmationMessage');
+        popupMessage.innerText = 'האם הקובץ הודפס בהצלחה?';
+        popupOverlay.style.display = 'flex';
+        popupOverlay.style.opacity = '0';
+        setTimeout(() => {
+            popupOverlay.style.opacity = '1';
+        }, 10);
+    }
+
+    function confirmPrint(isSuccess) {
+        const popupOverlay = document.getElementById('printConfirmationOverlay');
+        popupOverlay.style.opacity = '0';
+        setTimeout(() => {
+            popupOverlay.style.display = 'none';
+        }, 300);
+
+        if (isSuccess && currentPrintButton) {
+            const actionGroup = currentPrintButton.closest('.action-group');
+            actionGroup.dataset.printed = 'true';
             
-            // יצירת iframe נסתרת להפעלת חלון ההדפסה של הדפדפן
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            iframe.src = filename;
-            document.body.appendChild(iframe);
+            // נטרול שני הכפתורים
+            actionGroup.querySelector('.action-button').disabled = true;
+            currentPrintButton.disabled = true;
+
+            currentPrintButton.innerText = 'הודפס ✅';
+            currentPrintButton.style.backgroundColor = '#2ecc71';
             
-            iframe.onload = () => {
-                iframe.contentWindow.print();
-                setTimeout(() => {
-                    document.body.removeChild(iframe);
-                }, 1000);
-            };
+            printedFiles++;
+            checkAllFilesPrinted();
         }
     }
 
@@ -370,10 +511,8 @@
         const conditionsBox = actionGroup.querySelector('.conditions-box');
         const printButton = actionGroup.querySelector('.print-button');
         
-        // סמן שהתנאים אושרו
         actionGroup.dataset.accepted = 'true';
         
-        // הסתר את תיבת התנאים והצג את כפתור ההדפסה
         conditionsBox.style.display = 'none';
         printButton.style.display = 'block';
     }
@@ -395,6 +534,23 @@
         setTimeout(() => {
             popupOverlay.style.display = 'none';
         }, 300);
+    }
+    
+    function checkAllFilesPrinted() {
+        if (printedFiles === totalFiles) {
+            localStorage.setItem('printed_status', 'true');
+            
+            const mainContent = document.getElementById('mainContent');
+            const printedScreen = document.getElementById('printedScreen');
+            
+            mainContent.style.animation = 'fadeOut 0.5s forwards';
+            
+            setTimeout(() => {
+                mainContent.style.display = 'none';
+                printedScreen.style.display = 'flex';
+                printedScreen.style.animation = 'fadeIn 0.8s forwards';
+            }, 500);
+        }
     }
 </script>
 
