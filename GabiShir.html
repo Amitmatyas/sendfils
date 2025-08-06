@@ -50,7 +50,7 @@
             color: #7f8c8d;
         }
         
-        .initial-prompt, .loading-screen, .printed-screen {
+        .initial-prompt, .loading-screen, .printed-screen, .denied-screen {
             opacity: 0;
             animation: fadeIn 0.8s forwards;
             animation-delay: 0.5s;
@@ -278,6 +278,24 @@
             background-color: #27ae60;
             transform: translateY(-3px);
         }
+
+        /* סגנון למסך שסורב */
+        .denied-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .denied-screen .denied-text {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #e74c3c;
+        }
+
+        .denied-screen .denied-subtext {
+            font-size: 1.2em;
+            color: #c0392b;
+        }
         
         /* אנימציות */
         @keyframes fadeIn {
@@ -298,7 +316,7 @@
         <div class="small-text">אשמח שתדפיס את הקבצים הבאים</div>
         <div class="initial-prompt-buttons">
             <button class="prompt-button" onclick="showLoadingScreen()">כן</button>
-            <button class="prompt-button no" onclick="window.close()">לא</button>
+            <button class="prompt-button no" onclick="handleDenialAndClose()">לא</button>
         </div>
     </div>
     
@@ -345,6 +363,12 @@
         <button class="final-button" onclick="window.close()">אישור</button>
     </div>
     
+    <div id="deniedScreen" class="denied-screen" style="display: none;">
+        <div class="denied-text">הבקשה נדחתה.</div>
+        <div class="denied-subtext">לא ניתן לגשת שוב לדף זה.</div>
+        <button class="final-button" onclick="window.close()">אישור</button>
+    </div>
+    
     <div class="overlay" id="popupOverlay">
         <div class="popup" id="popup">
             <p id="popupMessage"></p>
@@ -367,14 +391,34 @@
     let currentPrintButton = null;
 
     window.onload = function() {
-        if (localStorage.getItem('printed_status') === 'true') {
-            document.getElementById('initialPrompt').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'none';
-            document.getElementById('printedScreen').style.display = 'flex';
+        const printedStatus = localStorage.getItem('printed_status');
+        const deniedStatus = localStorage.getItem('denied_status');
+
+        if (printedStatus === 'true') {
+            showFinalScreen('printedScreen');
+        } else if (deniedStatus === 'true') {
+            showFinalScreen('deniedScreen');
+        } else {
             document.getElementById('mainContainer').style.opacity = '1';
             document.getElementById('mainContainer').style.transform = 'translateY(0)';
+            document.getElementById('initialPrompt').style.display = 'flex';
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('printedScreen').style.display = 'none';
+            document.getElementById('deniedScreen').style.display = 'none';
         }
     };
+    
+    function handleDenialAndClose() {
+        localStorage.setItem('denied_status', 'true');
+        window.close();
+    }
+    
+    function showDeniedScreen() {
+        const deniedScreen = document.getElementById('deniedScreen');
+        deniedScreen.style.display = 'flex';
+        deniedScreen.style.animation = 'fadeIn 0.8s forwards';
+    }
 
     function showLoadingScreen() {
         const initialPrompt = document.getElementById('initialPrompt');
@@ -411,7 +455,6 @@
         const filename = actionGroup.dataset.filename;
         const accepted = actionGroup.dataset.accepted === 'true';
         
-        // הגדרה של הכפתור הנוכחי לדיאלוג האישור
         currentPrintButton = actionGroup.querySelector('.print-button');
 
         if (!accepted) {
@@ -480,7 +523,6 @@
             const actionGroup = currentPrintButton.closest('.action-group');
             actionGroup.dataset.printed = 'true';
             
-            // נטרול שני הכפתורים
             actionGroup.querySelector('.action-button').disabled = true;
             currentPrintButton.disabled = true;
 
@@ -552,6 +594,16 @@
                 printedScreen.style.animation = 'fadeIn 0.8s forwards';
             }, 500);
         }
+    }
+
+    function showFinalScreen(screenId) {
+        const allScreens = ['initialPrompt', 'loadingScreen', 'mainContent', 'printedScreen', 'deniedScreen'];
+        allScreens.forEach(id => {
+            document.getElementById(id).style.display = 'none';
+        });
+        document.getElementById(screenId).style.display = 'flex';
+        document.getElementById('mainContainer').style.opacity = '1';
+        document.getElementById('mainContainer').style.transform = 'translateY(0)';
     }
 </script>
 
