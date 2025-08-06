@@ -1,6 +1,55 @@
-<button onclick="openPrintPage()">פתח דף הדפסה</button>
-<script>
-function openPrintPage() {
-  window.open("GabiShir.html", "_blank");
-}
-</script>
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>פותח את דף ההדפסה...</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Heebo', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #e6e9f0 100%);
+            color: #2c3e50;
+            direction: rtl;
+            text-align: center;
+        }
+        .message-container {
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            animation: fadeInScale 0.8s forwards;
+        }
+        .message-container h1 {
+            font-size: 2.5em;
+            margin: 0 0 10px 0;
+        }
+        .message-container p {
+            font-size: 1.2em;
+            color: #7f8c8d;
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="message-container">
+        <h1>הדף נטען...</h1>
+        <p>נפתח חלון הדפסה חדש. אנא המתן.</p>
+    </div>
+    <script>
+        window.onload = function() {
+            setTimeout(() => {
+                window.open("https://amitmatyas-sendfils.netlify.app/GabiShir.html", "_blank");
+            }, 1000); // השהייה של שנייה אחת כדי שהמשתמש יספיק לראות את ההודעה
+        };
+    </script>
+</body>
+</html>
