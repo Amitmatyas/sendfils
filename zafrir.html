@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>טוען את הקובץ שלך...</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⌛</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f8f9fa; /* רקע אפור בהיר מאוד, כמעט לבן */
+            font-family: 'Heebo', sans-serif; /* שימוש בפונט Heebo */
+            color: #2c3e50; /* צבע טקסט כהה יותר, נעים לעין */
+            direction: rtl; /* כיוון טקסט מימין לשמאל לכל העמוד */
+            text-align: center; /* יישור מרכזי של התוכן בתוך המלבן */
+            overflow: hidden; /* מונע גלילה אם האנימציה יוצאת מגבולות המסך */
+        }
+
+        .loading-container {
+            background-color: #ffffff; /* רקע לבן למלבן */
+            border-radius: 12px; /* פינות מעוגלות */
+            padding: 40px 60px; /* ריווח פנימי גדול יותר */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* צל עדין יותר ומודרני */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0; /* מתחיל שקוף לאנימציית דהייה */
+            animation: fadeIn 0.8s forwards; /* אנימציית דהייה בכניסה */
+            max-width: 90%; /* כדי שלא יהיה רחב מדי במסכים קטנים */
+        }
+
+        .loader-text {
+            font-size: 2.8em; /* גודל פונט גדול יותר */
+            font-weight: 700; /* עובי פונט מודגש יותר */
+            margin-bottom: 15px;
+            color: #34495e; /* צבע טקסט ראשי כהה יותר */
+        }
+
+        .small-text {
+            font-size: 1.1em; /* גודל פונט גדול יותר לטקסט הקטן */
+            color: #7f8c8d; /* אפור בינוני עדין */
+        }
+
+        .small-ttext { /* זהו הטקסט של "אורלי מטיאס" */
+            font-size: 1.8em; /* גודל פונט גדול יותר */
+            color: #727e7e; /* אפור בטיפה יותר כהה */
+            /* margin-bottom: 30px; */ /* הסרנו את הרווח הזה לחלוטין */
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px; /* רווח בין הכפתורים */
+            margin-top: 20px; /* רווח מעל הכפתורים */
+            opacity: 0; /* מתחיל שקוף */
+            animation: fadeIn 0.8s forwards; /* אנימציית דהייה לכפתורים */
+            animation-delay: 0.5s; /* עיכוב בהופעת הכפתורים */
+        }
+
+        .action-button {
+            background-color: #3498db; /* כחול יפה לכפתורים */
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .action-button:hover {
+            background-color: #2980b9; /* גוון כהה יותר בלחיצה */
+            transform: translateY(-3px); /* אפקט ריחוף עדין */
+        }
+
+        /* אנימציית דהייה בכניסה */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* אנימציית דהייה ביציאה (לפני המעבר ל-PDF) */
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container" id="loadingContainer">
+        <div class="loader-text">טוען את הקובץ שלך…</div>
+        <div class="small-text">עמית מטיאס</div>
+        <div class="small-ttext" id="orlyText">אורלי מטיאס</div>
+        <div class="button-container" id="buttonContainer" style="display: none;">
+            <button class="action-button" onclick="window.location.href='צפריר רץ.png'">לצפייה בתמונה ללא רקע</button>
+        </div>
+    </div>
+
+    <script>
+        setTimeout(function() {
+            const loadingContainer = document.getElementById('loadingContainer');
+            const loaderText = loadingContainer.querySelector('.loader-text');
+            const smallText = loadingContainer.querySelector('.small-text');
+            const orlyText = document.getElementById('orlyText');
+            const buttonContainer = document.getElementById('buttonContainer');
+
+            // Hide the loading text and show buttons
+            loaderText.style.display = 'none';
+            smallText.style.display = 'none';
+            orlyText.style.display = 'none';
+            buttonContainer.style.display = 'flex'; // Show buttons with flex display
+            buttonContainer.style.animation = 'fadeIn 0.8s forwards'; // Apply fade-in animation to buttons
+
+        }, 3000); // 3000 מילישניות = 3 שניות לפני הופעת הכפתורים
+    </script>
+</body>
+</html>
