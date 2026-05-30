@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>אימות קובץ</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f0f2f5; text-align: center; overflow: hidden; }
+        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 350px; z-index: 10; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        input { padding: 10px; margin-top: 10px; border: 1px solid #ccc; border-radius: 5px; width: 80%; }
+        #loader { display: none; font-size: 20px; color: #555; }
+        
+        #moving-wrapper { display: none; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; }
+        #static-header { position: absolute; top: 20px; width: 100%; font-size: 20px; font-weight: bold; }
+        #click-counter { position: absolute; top: 50px; width: 100%; font-size: 16px; color: #666; }
+        #moving-number { position: absolute; font-size: 40px; font-weight: bold; color: #ff4757; cursor: pointer; transition: 0.1s; }
+    </style>
+</head>
+<body>
+
+<div id="step1" class="container">
+    <h2>היי קורן, הקובץ שלך מוכן</h2>
+      <h2>2 ההסרטונים משולבים בתוך הקוץ ה1</h2>
+    <button onclick="showInput()">לחץ על הכפתור</button>
+</div>
+
+<div id="step2" class="container" style="display:none;">
+    <p>אנא הזן 67 לאישור:</p>
+    <input type="text" id="confirmInput" placeholder="הקלד 67">
+    <br><br>
+    <button onclick="checkInput()">אישור</button>
+</div>
+
+<div id="loader" class="container">טוען את השלב הבא...</div>
+
+<div id="moving-wrapper">
+    <div id="static-header">לחץ על המספר 67 פעמים כדי לעבור שלב</div>
+    <div id="click-counter">נותרו 67 לחיצות</div>
+    <div id="moving-number">67</div>
+</div>
+
+<script>
+    function showInput() {
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('step2').style.display = 'block';
+    }
+
+    function checkInput() {
+        if (document.getElementById('confirmInput').value === '67') {
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('loader').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                startMovingLogic();
+            }, 2000);
+        } else {
+            alert('הקוד שגוי, נא להזין 67');
+        }
+    }
+
+    function startMovingLogic() {
+        document.getElementById('moving-wrapper').style.display = 'block';
+        const el = document.getElementById('moving-number');
+        
+        // תנועה אקראית
+        setInterval(() => {
+            el.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+            el.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+        }, 300);
+
+        // טיימר לסיום
+        setTimeout(() => {
+            el.innerHTML = "סתםםםםם";
+            el.style.position = "relative";
+            el.style.top = "0";
+            el.style.left = "0";
+            setTimeout(() => {
+                window.location.href = "https://sendgb.com/ADzJvrPe0Vc";
+            }, 1500);
+        }, 5000);
+    }
+</script>
+
+</body>
+</html>
